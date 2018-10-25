@@ -22,15 +22,15 @@
 # Any additional tools that are not specific to the kernel version
 # should be included in the "tools.list.chroot" file.
 #
-DEPENDS = linux-generic, \
-	  linux-tools-generic,
+DEPENDS = linux-$(HYPERVISOR), \
+	  linux-tools-$(HYPERVISOR),
 
 #
 # The following packages are required in order to generate VM artifacts
 # that are leveraging ZFS as their root filesystem.
 #
 DEPENDS += grub-pc, \
-	   delphix-zfs,
+	   delphix-zfs-$(HYPERVISOR),
 
 #
 # The following packages provide the minimal set of packages that are

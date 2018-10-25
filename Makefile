@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+HYPERVISOR = generic aws azure gcp kvm
+
 .PHONY: \
 	check \
 	package \
@@ -22,18 +24,25 @@
 
 check: shellcheck shfmtcheck
 
-package:
-	sed "s/@@VERSION@@/$$(date '+%Y.%m.%d.%H')/" \
-		debian/changelog.in > debian/changelog
+packages: $(addprefix package-,$(HYPERVISOR))
 
-	dpkg-buildpackage
+package-%:
+	@echo "rule: "$@" "$* # TODO
 
+	sed "s/@@VERSION@@/$$(date '+%Y.%m.%d.%H')/" debian/changelog.in | \
+		sed "s/@@HYPERVISOR@@/$*/" > debian/changelog
+	sed "s/@@HYPERVISOR@@/$*/" \
+		debian/control.in > debian/control
+
+	HYPERVISOR=$@ dpkg-buildpackage
+
+	# TODO do we actually want multiple versions of the source package
 	@for ext in dsc tar.xz; do \
 		mv -v ../delphix-platform_*.$$ext artifacts; \
 	done
 
 	@for ext in buildinfo changes deb; do \
-		mv -v ../delphix-platform_*_amd64.$$ext artifacts; \
+		mv -v ../delphix-platform-$*_*_amd64.$$ext artifacts; \
 	done
 
 shellcheck:
