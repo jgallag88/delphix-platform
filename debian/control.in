@@ -21,7 +21,8 @@ Maintainer: Delphix Engineering <eng@delphix.com>
 Build-Depends: debhelper (>= 10), devscripts
 Standards-Version: 4.1.2
 
-Package: delphix-platform
+Package: delphix-platform-@@TARGET_PLATFORM@@
+Provides: delphix-platform
 Architecture: any
 Replaces: base-files
 Depends: ${misc:Depends}, ${delphix:Depends}
