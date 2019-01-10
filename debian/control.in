@@ -22,10 +22,7 @@ Build-Depends: debhelper (>= 10), devscripts
 Standards-Version: 4.1.2
 
 Package: delphix-platform-@@TARGET_PLATFORM@@
-Provides: delphix-platform
 Architecture: any
-Replaces: base-files
-Depends: ${misc:Depends}, ${delphix:Depends}
 Description: Delphix Appliance Platform
   This package provides the base platform of the Delphix Appliance. It contains
   all the dependencies required to run Ubuntu with a ZFS root filesystem, tools

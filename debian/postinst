@@ -22,6 +22,7 @@ case $1 in
 	systemctl enable systemd-networkd.service
 
 	systemctl disable walinuxagent.service
+	systemctl disable foobar.service
 	;;
 esac
 
