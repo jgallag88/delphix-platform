@@ -43,14 +43,15 @@ package-%:
 	done
 	@mv -v ../delphix-platform-$*_*_amd64.deb artifacts
 
+SHELL_SCRIPTS := \
+	debian/postinst \
+	debian/prerm \
+	usr/bin/download-latest-image \
+	usr/bin/unpack-image \
+	var/lib/delphix-platform/ansible/apply
+
 shellcheck:
-	shellcheck \
-		usr/bin/download-latest-image \
-		usr/bin/unpack-image \
-		var/lib/delphix-platform/ansible/apply
+	shellcheck $(SHELL_SCRIPTS)
 
 shfmtcheck:
-	! shfmt -d \
-		usr/bin/download-latest-image \
-		usr/bin/unpack-image \
-		var/lib/delphix-platform/ansible/apply | grep .
+	! shfmt -d $(SHELL_SCRIPTS) | grep .
