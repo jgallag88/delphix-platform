@@ -32,11 +32,17 @@ check: shellcheck shfmtcheck
 
 packages: $(addprefix package-,$(ALL_PLATFORMS))
 
+ALL_PACKAGES := $(addprefix delphix-platform-,$(ALL_PLATFORMS))
 package-%:
 	@rm -f debian/changelog
 	dch --create --package delphix-platform -v $(VERSION) \
 			"Automatically generated changelog entry."
-	sed "s/@@TARGET_PLATFORM@@/$*/" debian/control.in >debian/control
+
+	OTHER_PACKAGES=$$( echo $(filter-out delphix-platform-$*, $(ALL_PACKAGES)) | tr ' ' , ); \
+	sed -e "s/@@TARGET_PLATFORM@@/$*/" \
+		-e "s/@@CONFLICTS@@/$$OTHER_PACKAGES/" \
+		debian/control.in >debian/control
+
 	TARGET_PLATFORM=$* dpkg-buildpackage -us
 	@for ext in buildinfo changes dsc tar.xz; do \
 		mv -v ../delphix-platform_*.$$ext artifacts; \

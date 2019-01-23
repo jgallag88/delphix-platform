@@ -21,8 +21,15 @@ Maintainer: Delphix Engineering <eng@delphix.com>
 Build-Depends: debhelper (>= 10), devscripts
 Standards-Version: 4.1.2
 
+#
+# Note that the 'Conflicts' field will be populated with the names of the
+# delphix-platform- packages for all of the other platforms. We can never have
+# more than one of these packages installed because they try to install some of
+# the same files.
+#
 Package: delphix-platform-@@TARGET_PLATFORM@@
 Provides: delphix-platform
+Conflicts: @@CONFLICTS@@
 Architecture: any
 Replaces: base-files
 Depends: ${misc:Depends}, ${delphix:Depends}
