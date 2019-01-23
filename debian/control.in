@@ -29,7 +29,7 @@ Standards-Version: 4.1.2
 #
 Package: delphix-platform-@@TARGET_PLATFORM@@
 Provides: delphix-platform
-Conflicts: @@CONFLICTS@@
+Conflicts: delphix-platform
 Architecture: any
 Replaces: base-files
 Depends: ${misc:Depends}, ${delphix:Depends}
