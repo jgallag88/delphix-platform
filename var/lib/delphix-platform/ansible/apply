@@ -108,7 +108,7 @@ fi
 
 find_playbooks | while read -r playbook; do
 	apply_playbook "$playbook"
-done
+done || exit 1
 
 #
 # This script is executed as part of the appliance-build process so that
