@@ -234,3 +234,31 @@
     line: '{{ item.key }}="{{ item.value }}"'
   with_items:
     - { key: 'JAVA_HOME', value: '/usr/lib/jvm/oracle-java8-jdk-amd64' }
+
+- shell: dpkg-query -Wf '${Package}' 'delphix-platform-*' | sed 's/delphix-platform-//'
+  register: determine_platform
+
+# Customize the Azure agent.
+- lineinfile:
+    dest: /etc/waagent.conf
+    regexp: '^{{ item.key }}='
+    line: '{{ item.key }}={{ item.value }}'
+  with_items:
+    #
+    # We use cloud-init rather than the Azure agent to handle any
+    # provisioning logic that we need.
+    #
+    - { key: 'Provisioning.Enabled', value: 'n' }
+    #
+    # Prevent customers from running arbitrary code on the engine via
+    # extensions when they deploy.
+    #
+    - { key: 'Extensions.Enabled', value: 'n' }
+    #
+    # This controls auto-updating of the extension handler (not the
+    # provisioning handler or daemon). It seems safer to disable this
+    # rather than to allow Microsoft to push new code to our engines,
+    # especially since we aren't using any extensions.
+    #
+    - { key: 'AutoUpdate.Enabled', value: 'n' }
+  when: determine_platform.stdout == "azure"
